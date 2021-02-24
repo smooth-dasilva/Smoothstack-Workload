@@ -9,7 +9,7 @@ from openpyxl import load_workbook
 #start logger in global scope
 logging.basicConfig(filename='report.log',filemode='w', level=logging.DEBUG)
 
-#low cohesion, does one thing!
+#high cohesion, does one thing!
 def GetData(filename: str):
     try:
         return load_workbook(filename = filename)
@@ -46,6 +46,7 @@ def LogVOCRolling(sheet, cell):
     promoters = sheet["A4"].value
     passives = sheet["A6"].value
     detractors = sheet["A8"].value
+
     if (sheet[cell[0]+"4"].value)>=200:
         logging.info("%s : Good , Value : %s"  %(str(promoters), sheet[cell[0]+"4"].value))
     else:
@@ -77,16 +78,22 @@ def main():
     """ calendar months library includes an initial element that is empty.
     this is so the index can match with the actual month index.
     we are not so particular. we show off filters along maps and lamda 
-    to get the right months string in a list """
+    to get the right months string in a list """  
 
     months = list(map( lambda month : month.lower(), list(filter(lambda month: month!="", calendar.month_name)) ))
+    
+    
+    ## be careful when indexing , try to always use exception handling when indexing as  values might not be 
+    # be in correct format, eg if file name is formated with underscores, code below break!
+ 
     workingMonth = filename.split("_")[3]
     workingYear = int ((filename.split("_")[4])[:4])
 
     #Get workbook  
     
     # but if the string after the 3rd '_' delimitter split is not in months,
-    # throw that error in the log. yell at client to format as expected.
+    # throw that error in the log. yell at client to format as expected. this may not be ideal 
+    #but problem states an asssumed format for file structure...
       
     if workingMonth in months:
         workbook = GetData(filename)
@@ -95,7 +102,7 @@ def main():
         logging.error("File given not formatted properly. Ending program from %s function, line %s" %(currentframe().f_code.co_name, frameinfo.lineno ))
         return 
 
-    # TODO: handle wehn  sheet tab is named properly
+    # TODO: handle when  sheet tab is named properly. ie get all sheet names dynamically, use regular expression to find required.... 
 
 
     vocSheet=workbook['VOC Rolling MoM']
