@@ -9,7 +9,7 @@ print(list(map(lambda OnesToFive: OnesToFive*5 , np.ones(10))))
 #5
 print(np.arange(10,51))
 #6
-print(list(filter( lambda OnlyEvens : OnlyEvens%2==0,np.arange(10,51))))
+print(list(filter( lambda OnlyEvens : OnlyEvens%2==0,np.arange(10,51)  )))
 #7
 
 #8
