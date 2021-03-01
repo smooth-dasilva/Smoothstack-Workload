@@ -19,13 +19,14 @@ class FileExpert:
     path :str
 
 
-    def __init__(self,app_logger, error_logger,pattern, path) -> None:
+    def __init__(self,_app_logger, _error_logger, pattern, path) -> None:
         
-        self.error_logger = error_logger
-        self.app_logger = app_logger
+        self.error_logger = _error_logger
+        self.app_logger = _app_logger
 
         self.pattern =pattern
         self.path = path
+        
         self.NameTimeMap = self.AddFilesNameTimeMap(self.CheckPathValidity())
     
     #Get List of all files in specified folder with specified pattern
@@ -57,5 +58,6 @@ class FileExpert:
         try:
             return os.listdir(self.path)
         except FileNotFoundError:
-            self.error_logger.error(f"Input error caught from {__name__}. Valid path not given. Returning empty string")
-            return ""            
+            self.error_logger.error(f"Input error caught from {__name__}. Valid path not given. \nTerminating program...")
+            self.path = "ERROR"
+            return ""        
